@@ -135,7 +135,8 @@ class Bridge_py:
         self.ser.write(sendStr.encode('utf-8')) # change for Python3
 
     def writeAndRead_TwoLists(self, header, listIntsFromPython, listFloatsFromPython):
-        """Sends to Arduino a list of `self.numIntValues_FromPy` integers and a list of `self.numFloatValues_FromPy` floats."""
+        """Sends to Arduino a list of `self.numIntValues_FromPy` integers and a list of `self.numFloatValues_FromPy` floats.
+        Returns from the reply from Arduino: a string header, a list of ints, a list of floats and the `millis` value."""
         assert len(listIntsFromPython)==self.numIntValues_FromPy, "You are expected to send `self.numIntValues_FromPy` integers."
         assert len(listFloatsFromPython)==self.numFloatValues_FromPy, "You are expected to send `self.numIntValues_FromPy` integers."
         
@@ -177,6 +178,26 @@ class Bridge_py:
                 waitingForReply = False
 
                 print ("===========")
+
+        #Until here, `receivedData` is a list with one element: the string received.
+
+        receivedData = receivedData[0]
+        receivedData = receivedData.split(" ")
+        receivedData.reverse()
+        header = receivedData.pop()
+
+        listIntsFromArduino = []
+        for _ in range(self.numIntValues_FromPy):
+            receivedData.pop()
+            listIntsFromArduino.append(int(receivedData.pop()))
+        
+        
+        listFloatsFromArduino = []
+        for _ in range(self.numIntValues_FromPy):
+            receivedData.pop()
+            listFloatsFromArduino.append(float(receivedData.pop()))
+        
+        return header, listIntsFromArduino, listFloatsFromArduino, float(receivedData[0])
 
     def sleep(self, nap):
         """Waits `nap` seconds. It just uses the `time.sleep` method."""
