@@ -85,7 +85,11 @@ void loop() {
   servoFraction = myBridge.floatsRecvd[0];
   updateFlashInterval();
   updateServoPos();
-  myBridge.writeEcho();
+  //myBridge.writeEcho();
+  //the line below gives the same result as using myBridge.writeEcho(), since we receive only 1 int and 1 float.
+  //myBridge.writeTwoArrays(myBridge.intsRecvd,1,myBridge.floatsRecvd,1);
+  int arrX[] = {1,3,5,7,9};
+  myBridge.writeTwoArrays(arrX, 5, myBridge.floatsRecvd,1);
   flashLEDs();
   moveServo();
 }
