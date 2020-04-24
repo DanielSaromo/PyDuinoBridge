@@ -1,18 +1,10 @@
-# pyduino_bridge.py - Library for transparent bidirectional
+# pyduino_bridge.py - PyDuino Bridge: Library for transparent bidirectional
 # communication between Python and Arduino. Python File.
 ###############################################################################################################
 # Author: Daniel Saromo. Adapted from Robin2 code.
 ###############################################################################################################
 # Description:
 #
-# 19 Jul 2014 - Robin2: Original code for Python 2
-# 08 Dec 2016 - Robin2: Updated for Python3
-# 23 Apr 2020 - DanielSaromo: Created Bridge_py (this Python code) and Bridge_ino (in Arduino code)
-# classes to allow high-level use.
-
-# The purpose of this program and the associated Arduino program is to demonstrate a system for sending
-#  and receiving data between a PC and an Arduino.
-
 # The key functions are:
 #    write(str) which sends the given string to the Arduino. The string may
 #                       contain characters with any of the values 0 to 255
@@ -21,18 +13,18 @@
 #                         The first element contains the number of bytes that the Arduino said it included in
 #                             message. This can be used to check that the full message was received.
 #                         The second element contains the message as a string
-
-
+#
+#
 # The overall process followed by the demo program is as follows
 #   open the serial connection to the Arduino - which causes the Arduino to reset
 #   wait for a message from the Arduino to give it time to reset
 #   loop through a series of test messages
 #      send a message and display it on the PC screen
 #      wait for a reply and display it on the PC
-
+#
 # to facilitate debugging the Arduino code this program interprets any message from the Arduino
 #    with the message length set to 0 as a debug message which is displayed on the PC screen
-
+#
 # the message to be sent to the Arduino starts with < and ends with > (startMarker and endMarker
 # default values)
 #    the message content comprises a string, an integer and a float
@@ -40,11 +32,11 @@
 #    for example <LED1,200,0.2>
 #    this means set the flash interval for LED1 to 200 millisecs
 #      and move the servo to 20% of its range
-
+#
 # receiving a message from the Arduino involves
 #    waiting until the startMarker is detected
 #    saving all subsequent bytes until the end marker is detected
-
+#
 # NOTES
 #       this program does not include any timeouts to deal with delays in communication
 #
@@ -54,15 +46,19 @@
 #               serPort = "/dev/ttyS80"
 #               baudRate = 9600
 #               ser = serial.Serial(serPort, baudRate)
-
+#
 # The code is as minimalist as possible, so that you can keep your
 # existing python and arduino and use it with the library.
 # Adapted from Robin2 code: https://forum.arduino.cc/index.php?topic=225329.msg1810764#msg1810764
 # Robin2 modification for Python3: https://forum.arduino.cc/index.php?topic=566897.0
 #
+# Timeline:
+#
+# 23 Apr 2020 - DanielSaromo: Created Bridge_py (this Python code) and Bridge_ino (in Arduino code)
+# classes to allow high-level use.
 ###############################################################################################################
 
-import serial
+import serial # PyDuino requires the serial library. You can install it with `pip install serial`.
 import time
 
 class Bridge_py:
@@ -134,7 +130,7 @@ class Bridge_py:
         assert len(sendStr)<= self.buffSize, "The maximum buffer size (message length) for the string to send to arduino is "+str(self.buffSize)
         self.ser.write(sendStr.encode('utf-8')) # change for Python3
 
-    def writeAndRead_TwoLists(self, header, listIntsFromPython, listFloatsFromPython):
+    def writeAndRead_HeaderAndTwoLists(self, header, listIntsFromPython, listFloatsFromPython):
         """Sends to Arduino a list of `self.numIntValues_FromPy` integers and a list of `self.numFloatValues_FromPy` floats.
         Returns from the reply from Arduino: a string header, a list of ints, a list of floats and the `millis` value."""
         assert len(listIntsFromPython)==self.numIntValues_FromPy, "You are expected to send `self.numIntValues_FromPy` integers."
