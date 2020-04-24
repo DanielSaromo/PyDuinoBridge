@@ -1,5 +1,6 @@
 # pyduino_bridge.py - PyDuino Bridge: Library for transparent bidirectional
 # communication between Python and Arduino. Python File.
+# PyDuino Bride uses pyserial library. You can install it with: `pip install pyserial`
 ###############################################################################################################
 # Author: Daniel Saromo. Adapted from Robin2 code.
 ###############################################################################################################
