@@ -182,18 +182,24 @@ class Bridge_py:
         #Until here, `receivedData` is a list with one element: the string received.
 
         receivedData = receivedData[0]
+
+        numInts = receivedData.count("Int")
+        numFloats = receivedData.count("Float")
+
         receivedData = receivedData.split(" ")
         receivedData.reverse()
         header = receivedData.pop()
 
+        assert header!="Int", "The header must not be \"Int\"!"
+        assert header!="Float", "The header must not be \"Float\"!"
+
         listIntsFromArduino = []
-        for _ in range(self.numIntValues_FromPy):
+        for _ in range(numInts):
             receivedData.pop()
             listIntsFromArduino.append(int(receivedData.pop()))
         
-        
         listFloatsFromArduino = []
-        for _ in range(self.numIntValues_FromPy):
+        for _ in range(numFloats):
             receivedData.pop()
             listFloatsFromArduino.append(float(receivedData.pop()))
         
