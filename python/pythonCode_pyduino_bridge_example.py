@@ -16,14 +16,15 @@ baudRate = 115200
 from pyduino_bridge import Bridge_py
 myBridge = Bridge_py()
 myBridge.begin(serPort, baudRate, numIntValues_FromPy=1, numFloatValues_FromPy=1)
-myBridge.setSleepTime(.1)
+myBridge.setSleepTime(4)
 
 testData = []
 testData.append("<LED1,200,0.2>")
-testData.append("<LED1,800,0.7>")
-testData.append("<LED2,800,0.5>")
+testData.append("<LED2,800,0.7>")
+testData.append("<LED1,800,0.5>")
 testData.append("<LED2,200,0.2>")
 testData.append("<LED1,200,0.7>")
+testData.append("<LED2,85,0.2>")
 
 dataFromArduino = myBridge.writeAndRead_Strings(testData)
 
