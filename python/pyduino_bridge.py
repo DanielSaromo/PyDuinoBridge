@@ -72,8 +72,10 @@ class Bridge_py:
         self.floatsRecvd = []
         self.sleepTime = 5.0
 
-    def begin(self, serPort, baudRate, openingMsg = "Arduino is ready", startMarker=ord("<"), \
-                            endMarker=ord(">"), buffSize=40, numIntValues=1, numFloatValues=1):
+    def begin(self, serPort, baudRate, numIntValues_FromPy, numFloatValues_FromPy,\
+        openingMsg = "Arduino is ready", startMarker=ord("<"), endMarker=ord(">"), buffSize=40):
+        print("Please verify in the header of the Arduino code that it is expecting to receive",numIntValues_FromPy,"integers and",numFloatValues_FromPy,"floats.")
+        print("Verify that you are sending from Python that number of elements mentioned above.")
         """Starts the Python-Arduino serial bridge for serial data transmission."""
         self.ser = serial.Serial(serPort, baudRate)
         print ("PyDuino Bridge opened in port " + serPort + "! Baudrate " + str(baudRate)+".")
@@ -82,8 +84,8 @@ class Bridge_py:
         self.startMarker = startMarker # 60: is the ASCII code of <
         self.endMarker = endMarker   # 62: is the ASCII code of >
         self.buffSize = buffSize
-        self.numIntValues = numIntValues
-        self.numFloatValues = numFloatValues
+        self.numIntValues_FromPy = numIntValues_FromPy
+        self.numFloatValues_FromPy = numFloatValues_FromPy
 
         self.waitForArduino()
 
@@ -125,8 +127,60 @@ class Bridge_py:
         return(ck)
 
     def write(self, sendStr):
-        """Sends data to arduino."""
+        """Sends a string to arduino."""
+        if not type(sendStr) is str:
+            raise TypeError("The message must be a string.")
+
+        assert len(sendStr)<= self.buffSize, "The maximum buffer size (message length) for the string to send to arduino is "+str(self.buffSize)
         self.ser.write(sendStr.encode('utf-8')) # change for Python3
+
+    def writeAndRead_TwoLists(self, header, listIntsFromPython, listFloatsFromPython):
+        """Sends to Arduino a list of `self.numIntValues_FromPy` integers and a list of `self.numFloatValues_FromPy` floats."""
+        assert len(listIntsFromPython)==self.numIntValues_FromPy, "You are expected to send `self.numIntValues_FromPy` integers."
+        assert len(listFloatsFromPython)==self.numFloatValues_FromPy, "You are expected to send `self.numIntValues_FromPy` integers."
+        
+        strListInts = []
+        for e in listIntsFromPython:
+            if type(e) is int:
+                strListInts.append(str(e))
+            else:
+                raise TypeError("The element "+str(e)+" must be an integer!")
+
+        strListFloats=[]
+        for e in listFloatsFromPython:
+            if type(e) is float:
+                strListFloats.append(str(e))
+            else:
+                raise TypeError("The element "+str(e)+" must be a float!")
+
+        toSendStr = ",".join([chr(self.startMarker)+str(header)] + strListInts + strListFloats)
+        toSendStr += chr(self.endMarker)
+
+        waitingForReply = False
+        receivedData = []
+
+        while len(receivedData)==0:
+
+            if waitingForReply == False:
+                self.write(toSendStr)
+                print ("Sent: " + toSendStr)
+                waitingForReply = True
+
+            if waitingForReply == True:
+
+                while self.ser.inWaiting() == 0:
+                    pass
+
+                dataRecvd = self.read()
+                print ("Reply received: " + dataRecvd)
+                receivedData.append(dataRecvd)
+                waitingForReply = False
+
+                print ("===========")
+
+    def sleep(self, nap):
+        """Waits `nap` seconds. It just uses the `time.sleep` method."""
+        time.sleep(nap)
 
     def setSleepTime(self, sleepTime):
         """Sets the sleep time (in seconds) after each sending and response pair."""
