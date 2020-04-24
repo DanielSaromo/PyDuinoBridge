@@ -2,8 +2,6 @@
 #include <Arduino.h>
 #include <pyduino_bridge.h>
 
-int pin13 = 13;
-
 
 Servo myServo;
 byte servoPin = 8;
@@ -17,11 +15,8 @@ byte ledPin[numLEDs] = {2, 13};
 unsigned long LEDinterval[numLEDs] = {50, 50};
 unsigned long prevLEDmillis[numLEDs] = {0, 0};
 
-
 int newFlashInterval = 0;
 float servoFraction = 0.0; // fraction of servo range to move
-
-
 
 //=============
 
@@ -31,9 +26,6 @@ void setup() {
 #define depurador2 5
 #define depurador3 6
 #define depurador4 7
-
-  pinMode(pin13, OUTPUT);
-  digitalWrite(pin13, LOW);
 
 
   pinMode(depurador1, OUTPUT);
@@ -83,46 +75,48 @@ void loop() {
   myBridge.curMillis = millis();
   myBridge.read();
   servoFraction = myBridge.floatsRecvd[0];
-  updateFlashInterval();
+  int newFlashInterval = myBridge.intsRecvd[0];
+  const char* ledName = myBridge.headerOfMsg;
+  updateFlashInterval(ledName, newFlashInterval);
   updateServoPos();
-  //myBridge.writeEcho();
+  myBridge.writeEcho();
   //the line below gives the same result as using myBridge.writeEcho(), since we receive only 1 int and 1 float.
   //myBridge.writeTwoArrays(myBridge.intsRecvd,1,myBridge.floatsRecvd,1);
-  int arrX[] = {1,3,5,7,9};
-  myBridge.writeTwoArrays(arrX, 5, myBridge.floatsRecvd,1);
+  //int arrX[] = {1,3,5,7,9};
+  //myBridge.writeTwoArrays(arrX, 5, myBridge.floatsRecvd,1);
   flashLEDs();
   moveServo();
 }
 
 //============
 
-void updateFlashInterval() {
+void updateFlashInterval(const char* ledname, int newFlashInt) {
 
   // this illustrates using different inputs to call different functions
-  if (strcmp(myBridge.headerFromPC, "LED1") == 0) {
-    updateLED1();
+  if (strcmp(ledname, "LED1") == 0) {
+    updateLED1(newFlashInt);
   }
 
-  if (strcmp(myBridge.headerFromPC, "LED2") == 0) {
-    updateLED2();
-  }
-}
-
-//=============
-
-void updateLED1() {
-
-  if (myBridge.intsRecvd[0] > 100) {
-    LEDinterval[0] = myBridge.intsRecvd[0];
+  if (strcmp(ledname, "LED2") == 0) {
+    updateLED2(newFlashInt);
   }
 }
 
 //=============
 
-void updateLED2() {
+void updateLED1(int newFlashInterval) {
 
-  if (myBridge.intsRecvd[0] > 100) {
-    LEDinterval[1] = myBridge.intsRecvd[0];
+  if (newFlashInterval > 80) {
+    LEDinterval[0] = newFlashInterval;
+  }
+}
+
+//=============
+
+void updateLED2(int newFlashInterval) {
+
+  if (newFlashInterval > 80) {
+    LEDinterval[1] = newFlashInterval;
   }
 }
 
