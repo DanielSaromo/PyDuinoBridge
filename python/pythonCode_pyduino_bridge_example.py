@@ -28,7 +28,6 @@ testData.append("<LED1,200,0.7>")
 dataFromArduino = myBridge.writeAndRead_Strings(testData)
 
 dataFromArduino2 = myBridge.writeAndRead_TwoLists("LED1", [800], [2.])
-
-#intsFromArduino, floatsFromArduino = myBridge.writeAndRead_TwoLists(header, listIntsFromPython, listFloatsFromPython)
+header_FromArdu, listInts_FromArdu, listFloats_FromArdu, millis_FromArdu = dataFromArduino2
 
 myBridge.close()
