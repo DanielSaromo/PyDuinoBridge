@@ -65,7 +65,7 @@ void Bridge_ino::parseData() {
   char * strtokIndx; // this is used by strtok() as an index
 
   strtokIndx = strtok(inputBuffer, ","); // get the first part - the string
-  strcpy(headerFromPC, strtokIndx); // copy it to headerFromPC  
+  strcpy(headerOfMsg, strtokIndx); // copy it to headerOfMsg  
 
   /*
   strtokIndx = strtok(NULL, ","); // this continues where the previous call left off
@@ -91,7 +91,7 @@ void Bridge_ino::writeEcho() {
   if (newDataFromPC) {
     newDataFromPC = false;
     ser.print("<");
-    ser.print(headerFromPC);
+    ser.print(headerOfMsg);
     ser.print(" ");
     
     for (int i = 0; i < numIntValues_FromPy; i++){
@@ -127,7 +127,7 @@ void Bridge_ino::writeTwoArrays(int arrInts[], int numInts, float arrayFloats[],
   if (newDataFromPC) {
     newDataFromPC = false;
     ser.print("<");
-    ser.print(headerFromPC);
+    ser.print(headerOfMsg);
     ser.print(" ");
     
     for (int i = 0; i < numInts; i++){
