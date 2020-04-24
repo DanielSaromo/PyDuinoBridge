@@ -33,7 +33,8 @@
 # to facilitate debugging the Arduino code this program interprets any message from the Arduino
 #    with the message length set to 0 as a debug message which is displayed on the PC screen
 
-# the message to be sent to the Arduino starts with < and ends with > (startMarker and endMarker)
+# the message to be sent to the Arduino starts with < and ends with > (startMarker and endMarker
+# default values)
 #    the message content comprises a string, an integer and a float
 #    the numbers are sent as their ascii equivalents
 #    for example <LED1,200,0.2>
@@ -66,19 +67,23 @@ import time
 
 class Bridge_py:
     """This class allows transparent bidirectional communication between Python and Arduino."""
-    #def __init__(self):
+    def __init__(self):
+        self.intsRecvd = []
+        self.floatsRecvd = []
+        self.sleepTime = 5.0
 
-
-    def begin(self, serPort, baudRate, openingMsg = "Arduino is ready"):
+    def begin(self, serPort, baudRate, openingMsg = "Arduino is ready", startMarker=ord("<"), \
+                            endMarker=ord(">"), buffSize=40, numIntValues=1, numFloatValues=1):
         """Starts the Python-Arduino serial bridge for serial data transmission."""
         self.ser = serial.Serial(serPort, baudRate)
         print ("PyDuino Bridge opened in port " + serPort + "! Baudrate " + str(baudRate)+".")
         self.openingMsg = openingMsg
 
-        self.startMarker = 60 # ASCII code of <
-        self.endMarker = 62   # ASCII code of >
-
-        self.sleepTime = 5.0
+        self.startMarker = startMarker # 60: is the ASCII code of <
+        self.endMarker = endMarker   # 62: is the ASCII code of >
+        self.buffSize = buffSize
+        self.numIntValues = numIntValues
+        self.numFloatValues = numFloatValues
 
         self.waitForArduino()
 
