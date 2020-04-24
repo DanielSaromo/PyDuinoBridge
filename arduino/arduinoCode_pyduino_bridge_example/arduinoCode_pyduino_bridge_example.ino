@@ -1,4 +1,6 @@
 #include <Servo.h>
+#include <Arduino.h>
+#include <pyduino_bridge.h>
 
 int pin13 = 13;
 
@@ -15,21 +17,10 @@ byte ledPin[numLEDs] = {2, 13};
 unsigned long LEDinterval[numLEDs] = {50, 50};
 unsigned long prevLEDmillis[numLEDs] = {0, 0};
 
-const byte buffSize = 40;
-char inputBuffer[buffSize];
-const char startMarker = '<';
-const char endMarker = '>';
-byte bytesRecvd = 0;
-boolean readInProgress = false;
-boolean newDataFromPC = false;
-char messageFromPC[buffSize] = {0};
-
 
 int newFlashInterval = 0;
 float servoFraction = 0.0; // fraction of servo range to move
 
-
-unsigned long curMillis;
 
 unsigned long prevReplyToPCmillis = 0;
 unsigned long replyToPCinterval = 1000;
@@ -37,13 +28,11 @@ unsigned long replyToPCinterval = 1000;
 //=============
 
 void setup() {
-  Serial.begin(115200);
-
   //Daniel zone
-  #define depurador1 4
-  #define depurador2 5
-  #define depurador3 6
-  #define depurador4 7
+#define depurador1 4
+#define depurador2 5
+#define depurador3 6
+#define depurador4 7
 
   pinMode(pin13, OUTPUT);
   digitalWrite(pin13, LOW);
@@ -82,93 +71,25 @@ void setup() {
   moveServo();
 
   // tell the PC we are ready
+
+  Serial.begin(115200);
   Serial.println("<Arduino is ready>");
+
+
 }
+Bridge_ino myBridge(Serial);
 
 //=============
 
 void loop() {
-  curMillis = millis();
-  getDataFromPC();
+  myBridge.curMillis = millis();
+  myBridge.read();
+  servoFraction = myBridge.floatsRecvd[0];
   updateFlashInterval();
   updateServoPos();
-  replyToPC();
+  myBridge.writeEcho();
   flashLEDs();
   moveServo();
-}
-
-//=============
-
-void getDataFromPC() {
-  digitalWrite(depurador2, !digitalRead(depurador2));
-  // receive data from PC and save it into inputBuffer
-
-  if (Serial.available() > 0) {
-    digitalWrite(depurador1, !digitalRead(depurador1));
-    char x = Serial.read();
-
-    // the order of these IF clauses is significant
-
-    if (x == endMarker) {
-      digitalWrite(depurador4, HIGH);
-      readInProgress = false;
-      newDataFromPC = true;
-      inputBuffer[bytesRecvd] = 0;
-      parseData();
-    }
-
-    if (readInProgress) {
-      inputBuffer[bytesRecvd] = x;
-      bytesRecvd ++;
-      if (bytesRecvd == buffSize) {
-        bytesRecvd = buffSize - 1;
-      }
-    }
-
-    if (x == startMarker) {
-      bytesRecvd = 0;
-      readInProgress = true;
-    }
-  }
-}
-
-//=============
-
-void parseData() {
-
-  // split the data into its parts
-
-  char * strtokIndx; // this is used by strtok() as an index
-
-  strtokIndx = strtok(inputBuffer, ",");     // get the first part - the string
-  strcpy(messageFromPC, strtokIndx); // copy it to messageFromPC
-
-  strtokIndx = strtok(NULL, ","); // this continues where the previous call left off
-  newFlashInterval = atoi(strtokIndx);     // convert this part to an integer
-
-  strtokIndx = strtok(NULL, ",");
-  servoFraction = atof(strtokIndx);     // convert this part to a float
-
-}
-
-//=============
-
-void replyToPC() {
-
-  if (newDataFromPC) {
-    newDataFromPC = false;
-    Serial.print("<Msg ");
-    Serial.print(messageFromPC);
-    Serial.print(" NewFlash ");
-    Serial.print(newFlashInterval);
-    Serial.print(" SrvFrac ");
-    Serial.print(servoFraction);
-    Serial.print(" SrvPos ");
-    Serial.print(newServoPos);
-    Serial.print(" Time ");
-    Serial.print(curMillis >> 9); // divide by 512 is approx = half-seconds
-    Serial.println(">");
-  }
 }
 
 //============
@@ -176,11 +97,11 @@ void replyToPC() {
 void updateFlashInterval() {
 
   // this illustrates using different inputs to call different functions
-  if (strcmp(messageFromPC, "LED1") == 0) {
+  if (strcmp(myBridge.headerFromPC, "LED1") == 0) {
     updateLED1();
   }
 
-  if (strcmp(messageFromPC, "LED2") == 0) {
+  if (strcmp(myBridge.headerFromPC, "LED2") == 0) {
     updateLED2();
   }
 }
@@ -189,8 +110,8 @@ void updateFlashInterval() {
 
 void updateLED1() {
 
-  if (newFlashInterval > 100) {
-    LEDinterval[0] = newFlashInterval;
+  if (myBridge.intsRecvd[0] > 100) {
+    LEDinterval[0] = myBridge.intsRecvd[0];
   }
 }
 
@@ -198,8 +119,8 @@ void updateLED1() {
 
 void updateLED2() {
 
-  if (newFlashInterval > 100) {
-    LEDinterval[1] = newFlashInterval;
+  if (myBridge.intsRecvd[0] > 100) {
+    LEDinterval[1] = myBridge.intsRecvd[0];
   }
 }
 
@@ -208,7 +129,7 @@ void updateLED2() {
 void flashLEDs() {
 
   for (byte n = 0; n < numLEDs; n++) {
-    if (curMillis - prevLEDmillis[n] >= LEDinterval[n]) {
+    if (myBridge.curMillis - prevLEDmillis[n] >= LEDinterval[n]) {
       prevLEDmillis[n] += LEDinterval[n];
       digitalWrite( ledPin[n], ! digitalRead( ledPin[n]) );
     }
