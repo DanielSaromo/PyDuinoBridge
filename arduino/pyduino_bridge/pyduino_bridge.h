@@ -52,7 +52,7 @@ class Bridge_ino
     byte bytesRecvd = 0;
     boolean readInProgress = false;
     boolean newDataFromPC = false;
-    char headerFromPC[buffSize] = {0};
+    char headerOfMsg[buffSize] = {0};
     unsigned long curMillis;
     unsigned long prevReplyToPCmillis = 0;
     unsigned long replyToPCinterval = 1000;
