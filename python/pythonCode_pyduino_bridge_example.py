@@ -16,7 +16,7 @@ baudRate = 115200
 from pyduino_bridge import Bridge_py
 myBridge = Bridge_py()
 myBridge.begin(serPort, baudRate, numIntValues_FromPy=1, numFloatValues_FromPy=1)
-myBridge.setSleepTime(1)
+myBridge.setSleepTime(.1)
 
 testData = []
 testData.append("<LED1,200,0.2>")
