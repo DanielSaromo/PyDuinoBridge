@@ -1,0 +1,14 @@
+# Syntax Coloring Map For PyDuino_Bridge
+
+# Datatypes (KEYWORD1)
+Bridge_ino    KEYWORD1
+
+# Methods and Functions (KEYWORD2)
+writeEcho KEYWORD2
+write_HeaderAndTwoArrays KEYWORD2
+parseData KEYWORD2
+setMillisDivider KEYWORD2
+
+# Instances (KEYWORD2)
+
+# Constants (LITERAL1)
