@@ -53,13 +53,27 @@
 # Adapted from Robin2 code: https://forum.arduino.cc/index.php?topic=225329.msg1810764#msg1810764
 # Robin2 modification for Python3: https://forum.arduino.cc/index.php?topic=566897.0
 #
+# Configuration considerations:
+#
+# By default, the maximum number of characters allowed in the messages between Arduino and Python is 40.
+# If you want to change this buffer size, you have to put the same value in both the Python (change the value `buffSize`
+# when using the `begin` method) and the Arduino code (change the line `#define buffSize 40` in the `pyduino_bridge.h` and
+# `pyduino_bridge.cpp` files).
+#
+# Also, verify that the same `numIntValues_FromPy` and `numFloatsValues_FromPy` values are configured in the Python code
+# you are using, and also in the Arduino library files (before uploading, change the lines `#define numIntValues_FromPy 1`
+# and `#define numFloatValues_FromPy 1` in the `pyduino_bridge.h` and `pyduino_bridge.cpp`). In the Arduino library files,
+# this number is set by the `#define` command, since the value representing the number of elements in the array must be a
+# constant expression, because arrays are blocks of static memory whose size must be determined at the compilation time,
+# before the program runs (for more information, see http://www.cplusplus.com/doc/tutorial/arrays/).
+#
 # Timeline:
 #
 # 23 Apr 2020 - DanielSaromo: Created Bridge_py (this Python code) and Bridge_ino (in Arduino code)
 # classes to allow high-level use.
 ###############################################################################################################
 
-__version__ = "1.0.3"
+__version__ = "1.0.4"
 
 import serial # PyDuino requires the serial library. You can install it with `pip install serial`.
 import time
@@ -72,12 +86,13 @@ class Bridge_py:
         self.sleepTime = 5.0
 
     def begin(self, serPort, baudRate, numIntValues_FromPy, numFloatValues_FromPy,\
-        openingMsg = "Arduino is ready", startMarker=ord("<"), endMarker=ord(">"), buffSize=40):
+        openingMsg = "Arduino is ready", startMarker=ord("<"), endMarker=ord(">"), buffSize=40,
+        verbosity=1):
         print("Please verify in the header of the Arduino code that it is expecting to receive",numIntValues_FromPy,"integers and",numFloatValues_FromPy,"floats.")
         print("Verify that you are sending from Python that number of elements mentioned above.")
         """Starts the Python-Arduino serial bridge for serial data transmission."""
         self.ser = serial.Serial(serPort, baudRate)
-        print ("PyDuino Bridge opened in port " + serPort + "! Baudrate " + str(baudRate)+".")
+        print ("PyDuino Bridge opened in port " + serPort + "! Baudrate: " + str(baudRate)+".")
         self.openingMsg = openingMsg
 
         self.startMarker = startMarker # 60: is the ASCII code of <
@@ -85,6 +100,7 @@ class Bridge_py:
         self.buffSize = buffSize
         self.numIntValues_FromPy = numIntValues_FromPy
         self.numFloatValues_FromPy = numFloatValues_FromPy
+        self.verbosity = verbosity
 
         self.waitForArduino()
 
@@ -163,7 +179,7 @@ class Bridge_py:
 
             if waitingForReply == False:
                 self.write(toSendStr)
-                print ("Sent: " + toSendStr)
+                if(self.verbosity==1): print ("Sent: " + toSendStr)
                 waitingForReply = True
 
             if waitingForReply == True:
@@ -172,11 +188,11 @@ class Bridge_py:
                     pass
 
                 dataRecvd = self.read()
-                print ("Reply received: " + dataRecvd)
+                if(self.verbosity==1): print ("Reply received: " + dataRecvd)
                 receivedData.append(dataRecvd)
                 waitingForReply = False
 
-                print ("===========")
+                if(self.verbosity==1): print ("===========")
 
         #Until here, `receivedData` is a list with one element: the string received.
 
@@ -212,6 +228,12 @@ class Bridge_py:
         """Sets the sleep time (in seconds) after each sending and response pair."""
         self.sleepTime = sleepTime
 
+    def setVerbosity(self, newVerbosity):
+        """If set to 1, shows in the Python terminal the messages send and received between Arduino and Python.
+        If set to 0, hides those messages. The default value is set to 1."""
+        self.verbosity = newVerbosity
+        print("PyDuino Bridge: Python terminal verbosity set to", self.verbosity,".")
+
     def writeAndRead_Strings(self, td):#td: transmitted data
         """Sends a list of strings to Arduino and returns the list of string replies."""
         numLoops = len(td)
@@ -224,7 +246,7 @@ class Bridge_py:
 
             if waitingForReply == False:
                 self.write(teststr)
-                print ("Sent (str # " + str(n) + "): " + teststr)
+                if(self.verbosity==1): print ("Sent (str # " + str(n) + "): " + teststr)
                 waitingForReply = True
 
             if waitingForReply == True:
@@ -233,12 +255,12 @@ class Bridge_py:
                     pass
 
                 dataRecvd = self.read()
-                print ("Reply received: " + dataRecvd)
+                if(self.verbosity==1): print ("Reply received: " + dataRecvd)
                 receivedData.append(dataRecvd)
                 n += 1
                 waitingForReply = False
 
-                print ("===========")
+                if(self.verbosity==1): print ("===========")
 
             time.sleep(self.sleepTime)
 

@@ -7,7 +7,7 @@ Bridge_ino    KEYWORD1
 writeEcho KEYWORD2
 write_HeaderAndTwoArrays KEYWORD2
 parseData KEYWORD2
-setMillisDivider KEYWORD2
+setMillisBitShifter KEYWORD2
 
 # Instances (KEYWORD2)
 
