@@ -1,4 +1,4 @@
-# PyDuinoBridge
+# PyDuinoBridge [![Build Status](https://travis-ci.com/DanielSaromo/PyDuinoBridge.svg?branch=master)]() ![PyPI](https://img.shields.io/pypi/v/pyduinobridge)
 Library for bidirectional communication between Python and Arduino.
 
 ## Instalation
@@ -18,6 +18,7 @@ The library uses Python>=3.6 and has been tested on different platforms (Windows
 You need to manually add the files `src/pyduino_bridge.h` and `src/pyduino_bridge.cpp` to your `.../Arduino/libraries` folder.
 
 In your Arduino code, add `#include <pyduino_bridge.h>`.
+
 
 ## Examples
 
