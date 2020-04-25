@@ -81,7 +81,7 @@
 serPort = 'COM12'
 baudRate = 115200
 
-from pyduino_bridge import Bridge_py
+from pyduinobridge import Bridge_py
 myBridge = Bridge_py()
 myBridge.begin(serPort, baudRate, numIntValues_FromPy=1, numFloatValues_FromPy=1)
 myBridge.setSleepTime(4)
