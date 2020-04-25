@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pyduinobridge",
-    version="1.0.0",
+    version="1.0.3",
     author="Daniel Saromo Mori",
     author_email="danielsaromo@gmail.com",
     description="A transparent library for communication between Python and Arduino",
