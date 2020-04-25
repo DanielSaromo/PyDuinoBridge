@@ -32,4 +32,4 @@ To use the library in your Arduino code, add `#include <pyduino_bridge.h>` in th
 
 Once the libraries are installed, execute`python_example.py` on the Python device.
 
-Also, upload `examples/arduino_example/arduino_example.ino` to your Arduino board. Connect the devices physically through their serial port (e.g., USB). The example has been tested on Arduino Nano and UNO boards.
+Also, upload `examples/arduino_example/arduino_example.ino` to your Arduino board. Connect the devices physically through their serial port. You can use a USB cable or maybe a serial Bluetooth module to achieve wireless connectivity. The example code has been tested on Arduino Nano and UNO boards with Python running on Windows, Raspberry Pi, and Jetson Nano.
