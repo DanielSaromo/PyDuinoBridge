@@ -17,12 +17,6 @@ The PyDuinoBridge library requires PySerial library. You can install it with the
 
 The library uses Python>=3.6 and has been tested on different platforms (Windows, Raspberry Pi, and Jetson Nano).
 
-#### Instructions for installing the library on Jetson Nano:
-
-Since Jetson Nano is sometimes a bit tricky to deal with, I give some specific instructions for it.
-
-Be sure you have `pip` installed. You can follow [this tutorial](https://www.pyimagesearch.com/2019/05/06/getting-started-with-the-nvidia-jetson-nano/).
-
 #### \[Linux\] Port opening error due to permission requirements:
 
 Follow [this tutorial](https://www.arduino.cc/en/guide/linux#toc6) from the Arduino official page. Remember that you can log out of your Linux session with the command `gnome-session-quit`. This error occurs when installing the library on the **Jetson Nano** board.
