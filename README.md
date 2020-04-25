@@ -17,10 +17,10 @@ The library uses Python>=3.6 and has been tested on different platforms (Windows
 
 You need to manually add the files `src/pyduino_bridge.h` and `src/pyduino_bridge.cpp` to your `.../Arduino/libraries` folder.
 
-In your arduino code, add `#include <pyduino_bridge.h>`.
+In your Arduino code, add `#include <pyduino_bridge.h>`.
 
 ## Examples
 
 Once the libraries are installed, execute`python_example.py` on the Python device.
 
-Also, upload `examples/arduino_example/arduino_example.ino` to your arduino board. Connect physically the devices throught their USB port. The example has been tested on Arduino Nano and UNO.
+Also, upload `examples/arduino_example/arduino_example.ino` to your Arduino board. Connect physically the devices throught their USB port. The example has been tested on Arduino Nano and UNO.
