@@ -1,6 +1,6 @@
-# PyDuino_Bridge
+# PyDuinoBridge
 Library for bidirectional communication between Python and Arduino.
 
 ## Instalation
 
-You need to install `pyduino_bridge` in both Arduino IDE and Python.
+You need to install `pyduinobridge` in both Arduino IDE and Python.
