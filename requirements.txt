@@ -1,1 +1,1 @@
-xmltodict==3.4
+pyserial==3.4
