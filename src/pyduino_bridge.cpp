@@ -144,15 +144,19 @@ void Bridge_ino::write_HeaderAndTwoArrays(char* header, int arrInts[], int numIn
     //ser.print(inputBuffer_original);
 
     ser.print("Time ");
-    ser.print(curMillis >> millisDivider);  // divide by 512 is approx = half-seconds.
+    if(rightBitShifter == 10){
+      ser.print("in apprx s ");
+    }
+    ser.print(curMillis >> rightBitShifter);  // divide by 512 is approx = half-seconds.
     //the value there was 9. changing it to 10 results in approx = seconds.
     ser.println(">");
   }
 }
 
-void Bridge_ino::setMillisDivider(byte newDivider){
+void Bridge_ino::setMillisBitShifter(byte newRightBitShifter){
   /*Sets the prescaler (divider) of the millis value that the Arduino always returns in the end
-  of the messages replied to Python.*/
-  millisDivider = newDivider;//if the divider is 10, results in approx = seconds.
+  of the messages replied to Python. Arduino will send to Python the value
+  `millis/pow(2,newRightBitShifter)`. The default value is 10.*/
+  rightBitShifter = newRightBitShifter;//if the divider is 10, results in approx = seconds.
   // divide by 512 is approx = half-seconds, which was is done by setting `millisDivider` as 9.
 }
