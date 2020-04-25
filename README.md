@@ -33,3 +33,9 @@ To use the library in your Arduino code, add `#include <pyduino_bridge.h>` in th
 Once the libraries are installed, execute`python_example.py` on the Python device.
 
 Also, upload `examples/arduino_example/arduino_example.ino` to your Arduino board. Connect the devices physically through their serial port. You can use a USB cable or maybe a serial Bluetooth module to achieve wireless connectivity. The example code has been tested on Arduino Nano and UNO boards with Python running on Windows, Raspberry Pi, and Jetson Nano.
+
+## Configuration considerations
+
+By default, the maximum number of characters allowed in the messages between Arduino and Python is 40. If you want to change this buffer size, you have to put the same value in both the Python (change the value `buffSize` when using the `begin` method) and the Arduino code (change the line `#define buffSize 40` in the `pyduino_bridge.h` and `pyduino_bridge.cpp`).
+
+Also, verify that the same `numIntValues_FromPy` and `numFloatsValues_FromPy` values are configured in your Python code according to the Arduino library files (before uploading, change the lines `#define numIntValues_FromPy 1` and `#define numFloatValues_FromPy 1` in the `pyduino_bridge.h` and `pyduino_bridge.cpp` files).
