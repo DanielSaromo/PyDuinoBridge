@@ -1,4 +1,4 @@
-# PyDuinoBridge [![Build Status](https://travis-ci.com/DanielSaromo/PyDuinoBridge.svg?branch=master)](https://travis-ci.com/DanielSaromo/PyDuinoBridge) ![PyPI](https://img.shields.io/pypi/v/pyduinobridge)
+# PyDuino Bridge [![Build Status](https://travis-ci.com/DanielSaromo/PyDuinoBridge.svg?branch=master)](https://travis-ci.com/DanielSaromo/PyDuinoBridge) ![PyPI](https://img.shields.io/pypi/v/pyduinobridge)
 Library for bi-directional communication between Python and Arduino.
 
 Connect Python and Arduino as easily as sending a list of variables from one platform and receiving it on the other one. With PyDuino Bridge, you can bi-directionally send a string, a list of integers, and a list of floats. Thus, you can bring the Python computational power and flexibility to the real-world interfacing capability of Arduino.
@@ -13,7 +13,7 @@ You need to install `pyduinobridge` in both Arduino IDE and Python.
 PyDuinoBridge is on the [Python Package Index](https://pypi.org/project/pyduinobridge/ "PyDuinoBridge page on PyPI").
 To install the library, first install `pip` and then use the command `pip install pyduinobridge`.
 
-The PyDuinoBridge library requires PySerial library. You can install it with the command `pip install pyserial`.
+The PyDuino Bridge library requires PySerial library. You can install it with the command `pip install pyserial`.
 
 The library uses Python>=3.6 and has been tested on different platforms (Windows, Raspberry Pi, and Jetson Nano).
 
