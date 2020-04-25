@@ -10,7 +10,7 @@ The library is built on the [code](https://forum.arduino.cc/index.php?topic=5668
 You need to install `pyduinobridge` in both Arduino IDE and Python.
 
 ### In Python:
-PyDuinoBridge is on the [Python Package Index](https://pypi.org/project/pyduinobridge/ "PyDuinoBridge page on PyPI").
+PyDuino Bridge is on the [Python Package Index](https://pypi.org/project/pyduinobridge/ "PyDuinoBridge page on PyPI").
 To install the library, first install `pip` and then use the command `pip install pyduinobridge`.
 
 The PyDuino Bridge library requires PySerial library. You can install it with the command `pip install pyserial`.
