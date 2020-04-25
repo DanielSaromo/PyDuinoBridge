@@ -25,6 +25,20 @@
   - A servomotor, which control pin is connected to the pin 5.
   - A button (switch), connected to the pin 8.
 
+  Configuration considerations:
+
+  By default, the maximum number of characters allowed in the messages between Arduino and Python is 40.
+  If you want to change this buffer size, you have to put the same value in both the Python (change the value `buffSize`
+  when using the `begin` method) and the Arduino code (change the line `#define buffSize 40` in the `pyduino_bridge.h` and
+  `pyduino_bridge.cpp` files).
+
+  Also, verify that the same `numIntValues_FromPy` and `numFloatsValues_FromPy` values are configured in the Python code
+  you are using, and also in the Arduino library files (before uploading, change the lines `#define numIntValues_FromPy 1`
+  and `#define numFloatValues_FromPy 1` in the `pyduino_bridge.h` and `pyduino_bridge.cpp`). In the Arduino library files,
+  this number is set by the `#define` command, since the value representing the number of elements in the array must be a
+  constant expression, because arrays are blocks of static memory whose size must be determined at the compilation time,
+  before the program runs (for more information, see http://www.cplusplus.com/doc/tutorial/arrays/).
+
   Timeline:
 
   24 Apr 2020 - Daniel Saromo: Created python_example.py and arduino_example.py as a
@@ -86,7 +100,7 @@ Bridge_ino myBridge(Serial);
 //=============
 
 void loop() {
-  myBridge.curMillis = millis();
+  myBridge.curMillis = millis(); 
   myBridge.read();
   
   /*since in Arduino code, arrays are blocks of static memory whose size must be determined at compile time, before the program runs,
@@ -102,7 +116,11 @@ void loop() {
   updateFlashInterval(ledName, newFlashInterval);
   updateServoPos();
   
-  //myBridge.writeEcho(); //sends to Python the same values received, and the millis time in seconds.
+  //myBridge.writeEcho(); //sends to Python the same values received, and the millis time scaled by a bit shifting.
+  //Internally, the following bit shifting is applied: `millis >> rightBitShifter`. This is equal to `millis/pow(2,rightBitShifter)`.
+  //By default, Arduino sends to Python the millis value in apprx seconds, since the default bitShifter value is 10.
+  //Arduino always sends a time value to Python.
+  
   //the line below gives the same result as using myBridge.writeEcho(), since we receive from Python only 1 int and 1 float.
   //myBridge.writeTwoArrays(myBridge.intsRecvd,1,myBridge.floatsRecvd,1);
 
