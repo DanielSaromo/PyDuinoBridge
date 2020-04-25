@@ -10,3 +10,6 @@ before_install:
   
 install:
   - pip install pyduinobridge
+  
+script:
+  - python python_example.py
