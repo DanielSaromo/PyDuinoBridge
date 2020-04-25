@@ -1,5 +1,5 @@
 # PyDuinoBridge [![Build Status](https://travis-ci.com/DanielSaromo/PyDuinoBridge.svg?branch=master)](https://travis-ci.com/DanielSaromo/PyDuinoBridge) ![PyPI](https://img.shields.io/pypi/v/pyduinobridge)
-Library for bidirectional communication between Python and Arduino.
+Library for bi-directional communication between Python and Arduino.
 
 Connect Python and Arduino as easily as sending a list of variables from one platform and receiving it on the other one. With PyDuino Bridge, you can bi-directionally send a string, a list of integers, and a list of floats. Thus, you can bring the Python computational power and flexibility to the real-world interfacing capability of Arduino.
 
