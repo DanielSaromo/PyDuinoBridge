@@ -1,1 +1,15 @@
 language: python
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8"
+  
+before_install:
+  - pip install pyserial
+  
+install:
+  - pip install pyduinobridge
+  
+script:
+  - python python_example.py
