@@ -1,4 +1,4 @@
-# PyDuinoBridge [![Build Status](https://travis-ci.com/DanielSaromo/PyDuinoBridge.svg?branch=master)]() ![PyPI](https://img.shields.io/pypi/v/pyduinobridge)
+# PyDuinoBridge ![Travis (.com)](https://img.shields.io/travis/com/DanielSaromo/PyDuinoBridge) ![PyPI](https://img.shields.io/pypi/v/pyduinobridge)
 Library for bidirectional communication between Python and Arduino.
 
 ## Instalation
