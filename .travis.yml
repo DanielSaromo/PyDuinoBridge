@@ -12,4 +12,4 @@ install:
   - pip install pyduinobridge
   
 script:
-  - python python_example.py
+  - python test/python_test.py
