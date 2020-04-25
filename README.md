@@ -21,4 +21,4 @@ In your arduino code, add `#include <pyduino_bridge.h>`.
 
 ## Examples
 
-Once the libraries are installed, you can use `python_example.py` on the Python device and upload `examples/arduino_example/arduino_example.ino` to your arduino board. The example has been tested on Arduino Nano and UNO.
+Once the libraries are installed, execute`python_example.py` on the Python device and upload `examples/arduino_example/arduino_example.ino` to your arduino board. Connect physically the devices throught their USB port. The example has been tested on Arduino Nano and UNO.
