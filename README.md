@@ -15,7 +15,7 @@ To install the library, first install `pip` and then use the command `pip instal
 
 The PyDuino Bridge library requires PySerial library. You can install it with the command `pip install pyserial`.
 
-The library uses Python>=3.6 and has been tested on different platforms (Windows, Raspberry Pi, and Jetson Nano).
+The library uses Python>=3.6 and has been tested on different platforms (Windows, Ubuntu, Raspberry Pi, and Jetson Nano).
 
 To use the library in your Python code, use the command `from pyduinobridge import Bridge_py`.
 
