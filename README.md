@@ -21,7 +21,9 @@ To use the library in your Python code, use the command `from pyduinobridge impo
 
 #### \[Linux\] Port opening error due to permission requirements:
 
-To solve this error, follow [this tutorial](https://www.arduino.cc/en/guide/linux#toc6) from the Arduino official page. Remember that you can log out of your Linux session with the command `gnome-session-quit`. This error occurs when installing the library on the **Jetson Nano** board.
+To solve this error, follow [this tutorial](https://www.arduino.cc/en/guide/linux#toc6) from the Arduino official page. Remember that you can log out of your Linux session with the command `gnome-session-quit`.
+
+If the problem persists, you may execute the command `sudo chmod 666 /dev/ttyACM0` (as suggested [here](https://stackoverflow.com/questions/27858041/oserror-errno-13-permission-denied-dev-ttyacm0-using-pyserial-from-pyth)). For the example command given, I assume that your Arduino board is connected to the port `ttyACM0`.
 
 ### In Arduino:
 
@@ -34,7 +36,7 @@ To use the library in your Arduino code, add `#include <pyduino_bridge.h>` in th
 
 Once the libraries are installed, execute`python_example.py` on the Python device.
 
-Also, upload `examples/arduino_example/arduino_example.ino` to your Arduino board. Connect the devices physically through their serial port. You can use a USB cable or maybe a serial Bluetooth module to achieve wireless connectivity. The example code has been tested on Arduino Nano and UNO boards with Python running on Windows, Raspberry Pi, and Jetson Nano.
+Also, upload `examples/arduino_example/arduino_example.ino` to your Arduino board. Connect the devices physically through their serial port. You can use a USB cable or maybe a serial Bluetooth module to achieve wireless connectivity. The example code has been tested on Arduino Nano and UNO boards with Python running on Windows, Ubuntu, Raspberry Pi, and Jetson Nano.
 
 ## Configuration considerations
 
