@@ -27,7 +27,7 @@ If the problem persists, you may execute the command `sudo chmod 666 /dev/ttyACM
 
 ### In Arduino:
 
-You need to manually add the files `src/pyduino_bridge.h` and `src/pyduino_bridge.cpp` to your `.../Arduino/libraries` folder.
+You need to manually add the files `src/pyduino_bridge.h` and `src/pyduino_bridge.cpp` to your `.../Arduino/libraries/` folder.
 
 To use the library in your Arduino code, add `#include <pyduino_bridge.h>` in the header.
 
