@@ -131,6 +131,9 @@ void loop() {
   myBridge.write_HeaderAndTwoArrays(ledName, arrX, 3, myBridge.floatsRecvd, 1);
   flashLEDs();
   moveServo();
+  //Assuming that the "xyz" header is not related to any programmed command...
+  strcpy(myBridge.headerOfMsg, "xyz");//this line prevents the Arduino board from keeping executing the last command received cyclically.
+  
 }
 
 //============
