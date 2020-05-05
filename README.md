@@ -27,7 +27,7 @@ If the problem persists, you may execute the command `sudo chmod 666 /dev/ttyACM
 
 ### In Arduino:
 
-PyDuino Bridge is on the official Arduino Library Manager. Just type `pyduino bridge` in the search box and install the library. You can follow [this tutorial](https://www.arduino.cc/en/guide/libraries).
+PyDuino Bridge is on the official Arduino Library Manager. Just type `pyduino bridge` in the search box and install the library. You can follow [the official Arduino tutorial](https://www.arduino.cc/en/guide/libraries).
 
 Optionally, you can manually add the files `src/pyduino_bridge.h` and `src/pyduino_bridge.cpp` to your `.../Arduino/libraries/` folder.
 
