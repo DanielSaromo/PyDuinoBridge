@@ -42,6 +42,6 @@ Also, upload `examples/arduino_example/arduino_example.ino` to your Arduino boar
 
 ## Configuration considerations
 
-By default, the maximum number of characters allowed in the messages between Arduino and Python is 40. If you want to change this buffer size, you have to put the same value in both the Python (change the value `buffSize` when using the `begin` method) and the Arduino code (change the line `#define buffSize 40` in the `pyduino_bridge.h` and `pyduino_bridge.cpp`).
+By default, the maximum number of characters allowed in the messages between Arduino and Python is 40. If you want to change this buffer size, you have to put the same value in both the Python (change the value `buffSize` when using the `begin` method) and the Arduino code (change the line `#define buffSize 40` in the `pyduino_bridge.h` and `pyduino_bridge.cpp` files).
 
 Also, verify that the same `numIntValues_FromPy` and `numFloatsValues_FromPy` values are configured in your Python code according to the Arduino library files (before uploading, change the lines `#define numIntValues_FromPy 1` and `#define numFloatValues_FromPy 1` in the `pyduino_bridge.h` and `pyduino_bridge.cpp` files). By default, PyDuino Bridge is configured to send and receive a list of one integer and a list of one float (besides the header and the time information).
