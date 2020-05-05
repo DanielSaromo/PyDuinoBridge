@@ -132,7 +132,7 @@ void loop() {
   flashLEDs();
   moveServo();
   //Assuming that the "xyz" header is not related to any programmed command...
-  strcpy(myBridge.headerOfMsg, "xyz");//this line prevents the Arduino board from keeping executing the last command received cyclically.
+  strcpy(myBridge.headerOfMsg, "xyz");//...this line prevents the Arduino board from keeping executing the last command received cyclically.
   
 }
 
