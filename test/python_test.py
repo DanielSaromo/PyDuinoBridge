@@ -10,4 +10,5 @@
 ###############################################################################################################
 
 from pyduinobridge import Bridge_py
+print(pyduinobridge.__version__)
 myBridge = Bridge_py()
