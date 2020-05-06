@@ -73,8 +73,6 @@
 # classes to allow high-level use.
 ###############################################################################################################
 
-__version__ = "1.0.6"
-
 import serial # PyDuino requires the serial library. You can install it with `pip install serial`.
 import time
 
